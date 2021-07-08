@@ -1,4 +1,4 @@
-import './App.css';
+import s from 'components/App/App.module.css';
 import React, { Component } from 'react';
 import Section from 'components/Section/Section';
 import ContactForm from 'components/ContactForm/ContactForm';
@@ -18,8 +18,7 @@ export default class App extends Component {
   };
 
   formSubmitHandler = data => {
-    console.log(data.name);
-    console.log(data.number);
+
     if (this.state.contacts.some(contact => contact.name === data.name)) {
       alert(`${data.name} is already in contacts.`);
     } else {
@@ -53,7 +52,7 @@ export default class App extends Component {
     );
 
     return (
-      <div>
+      <div className={s.wrapper}>
         <Section title="Phonebook">
           <ContactForm onSubmit={this.formSubmitHandler} />
         </Section>

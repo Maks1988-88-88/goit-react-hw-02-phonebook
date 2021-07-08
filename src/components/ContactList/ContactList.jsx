@@ -1,4 +1,4 @@
-export default function ContactList({ contacts }) {
+export default function ContactList({ contacts, onDelete }) {
   return (
     <ol>
       {contacts.map(el => (
@@ -7,7 +7,9 @@ export default function ContactList({ contacts }) {
             <span>
               {el.name}: {el.number}
             </span>
-            <button type="button">Delete</button>
+            <button type="button" onClick={() => onDelete(el.id)}>
+              Delete
+            </button>
           </p>
         </li>
       ))}

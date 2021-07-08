@@ -4,24 +4,19 @@ import Section from 'components/Section/Section';
 import ContactForm from 'components/ContactForm/ContactForm';
 import { nanoid } from 'nanoid';
 import ContactList from 'components/ContactList/ContactList';
-
+import Filter from 'components/Filter/Filter';
 
 export default class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
   };
 
-  // handleInputChange = e => {
-  //   // console.log(e.currentTarget.value);
-  //   // console.log(e.currentTarget.name);
-  //   const { name, value } = e.currentTarget;
-  //   this.setState({ [name]: value });
-  // };
-
-  // handleSubmit = e => {
-  //   e.preventDefault();
-  //   console.log(this.state);
-  // };
 
   formSubmitHandler = data => {
     console.log(data.name);
@@ -36,15 +31,35 @@ export default class App extends Component {
     }));
   };
 
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
+  };
+
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
   render() {
-    const { contacts } = this.state;
+    const { contacts, filter } = this.state;
+
+    const normalizeFilter = this.state.filter.toLowerCase();
+    const filterContacts = this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeFilter),
+    );
+
     return (
       <div>
         <Section title="Phonebook">
           <ContactForm onSubmit={this.formSubmitHandler} />
         </Section>
         <Section title="Contacts">
-          <ContactList contacts={contacts} />
+          <Filter value={filter} onChange={this.changeFilter} />
+          <ContactList
+            contacts={filterContacts}
+            onDelete={this.deleteContact}
+          />
         </Section>
       </div>
     );
